@@ -60,7 +60,7 @@ function App() {
     console.log("asda");
   };
 
-  const isButtonEnabled = () => {
+  const isLoginButtonEnabled = () => {
     if (
       !emailError &&
       !passwordError &&
@@ -70,6 +70,18 @@ function App() {
       return true;
     return false;
   };
+
+  const isSignUpButtonEnabled = () => {
+    if (
+      !emailError &&
+      !passwordError &&
+      email.length > 0 &&
+      password.length > 0 && Object.values(passwordValidation).every(value => value === true)
+    )
+      return true;
+    return false;
+  };
+
 
   const onRegisterOrSignUp = () => {
     setIsLogin(!isLogin);
@@ -98,7 +110,7 @@ function App() {
         <SpaceFiller margin="30px" />
         <button
           className={
-            isButtonEnabled() ? "submitButton" : "submitButtonDisabled"
+            isLoginButtonEnabled() ? "submitButton" : "submitButtonDisabled"
           }
           onClick={onSubmit}
         >
@@ -126,7 +138,9 @@ function App() {
         <SpaceFiller margin="10px" />
         {Object.keys(passwordValidation).map((key, index) => (
           <div className={"validationRow"} key={`${key}${index}`}>
-            <div className={passwordValidation[key] ? "successText": "errorText"}>
+            <div
+              className={passwordValidation[key] ? "successText" : "errorText"}
+            >
               {passwordValidation[key] ? "✔" : "✖"}
             </div>
             <div>{validationStringArray[index]}</div>
@@ -136,7 +150,7 @@ function App() {
         <SpaceFiller margin="20px" />
         <button
           className={
-            isButtonEnabled() ? "submitButton" : "submitButtonDisabled"
+            isSignUpButtonEnabled() ? "submitButton" : "submitButtonDisabled"
           }
           onClick={onSubmit}
         >
