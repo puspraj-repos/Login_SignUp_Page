@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import SpaceFiller from "./SpaceFiller/SpaceFiller.jsx";
 import { validateEmail, validatePassword } from "./utility/commonFunctions.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   LOGIN,
   EMAIL_ADDRESS,
@@ -15,6 +14,7 @@ import {
   AT_LEAST_DIGITS,
   AT_LEAST_SPECIAL_CHARACTERS,
   AT_LEAST_LETTERS,
+  SHOW_PASSWORD,
 } from "./constants/string.jsx";
 import "./App.css";
 
@@ -25,6 +25,8 @@ function App() {
   const [passwordError, setPasswordError] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [passwordValidation, setPasswordValidation] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  
   const validationStringArray = [
     AT_LEAST_UPPER_CASE,
     AT_LEAST_DIGITS,
@@ -74,6 +76,10 @@ function App() {
     reset();
   };
 
+  const handleCheckboxChange = () => {
+    setShowPassword(!showPassword);
+  }
+
   const reset = () => {
     setEmail("");
     setPassword("");
@@ -120,7 +126,7 @@ function App() {
         <SpaceFiller margin="10px" />
         {Object.keys(passwordValidation).map((key, index) => (
           <div className={"validationRow"} key={`${key}${index}`}>
-            <div className={passwordValidation[key] ? "successText": null}>
+            <div className={passwordValidation[key] ? "successText": "errorText"}>
               {passwordValidation[key] ? "✔" : "✖"}
             </div>
             <div>{validationStringArray[index]}</div>
@@ -168,13 +174,23 @@ function App() {
         <div className="passwordHeader">{PASSWORD}</div>
         <SpaceFiller />
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password} // Bind the input value to the state
           onChange={onPasswordChange} // Call handleInputChange on every keystroke
           placeholder={PASSWORD}
           className="inputPassword"
           required
         />
+        <SpaceFiller margin="10px" />
+        <div className="checkBoxWrapper">
+          <input
+            type="checkbox" // Checkbox input type
+            checked={showPassword} // Set checked based on state
+            onChange={handleCheckboxChange} // Handle change event
+            className="passwordCheckbox"
+          />
+          <div>{SHOW_PASSWORD}</div>
+        </div>
       </>
     );
   };

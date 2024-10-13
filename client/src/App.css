@@ -87,7 +87,7 @@
   outline: none;                 /* Remove default outline */
   background-color: white;       /* Change background color on focus */
 }
-.emailHeader, .passwordHeader{
+.emailHeader, .passwordHeader, .checkBoxWrapper {
   font-family: 'Arial', sans-serif; 
   line-height: 1.6;                 
   margin-bottom: 15px;               
@@ -146,4 +146,20 @@
 .successText{
   color: green;
   font-weight: bold;
+}
+
+.errorText{
+  color: #FF6347 ;
+  font-weight: bold;
+}
+.checkBoxWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.passwordCheckbox{
+  cursor: pointer;
 }
