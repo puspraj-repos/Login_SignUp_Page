@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import SpaceFiller from './SpaceFiller/SpaceFiller.jsx';
-import { validateEmail } from './utility/commonFunctions.jsx'
+import { useState, useEffect } from "react";
+import SpaceFiller from "./SpaceFiller/SpaceFiller.jsx";
+import { validateEmail, validatePassword } from "./utility/commonFunctions.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   LOGIN,
   EMAIL_ADDRESS,
   INVALID_MAIL,
   PASSWORD,
   DONOT_HAVE_ACCESS,
-  REGISTER
+  REGISTER,
+  SIGN_UP,
+  ALREADY_ACCOUNT,
+  AT_LEAST_UPPER_CASE,
+  AT_LEAST_DIGITS,
+  AT_LEAST_SPECIAL_CHARACTERS,
+  AT_LEAST_LETTERS,
 } from "./constants/string.jsx";
-import './App.css'
+import "./App.css";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -17,12 +24,22 @@ function App() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [passwordValidation, setPasswordValidation] = useState({});
+  const validationStringArray = [
+    AT_LEAST_UPPER_CASE,
+    AT_LEAST_DIGITS,
+    AT_LEAST_SPECIAL_CHARACTERS,
+    AT_LEAST_LETTERS,
+  ];
+
+  useEffect(() => {
+    setPasswordValidation(validatePassword(password));
+  }, [password]);
 
   const onEmailChange = (e) => {
     setEmail(e.target.value);
     if (e.target.value !== "") {
       setEmailError(validateEmail(e.target.value));
-      
     } else {
       setEmailError(false);
     }
@@ -32,27 +49,107 @@ function App() {
     setPassword(e.target.value);
     if (e.target.value === "") {
       setPasswordError(true);
-    }else {
+    } else {
       setPasswordError(false);
     }
   };
 
   const onSubmit = () => {
-    console.log('asda')
+    console.log("asda");
   };
 
   const isButtonEnabled = () => {
-    if (!emailError && !passwordError && email.length > 0 && password.length > 0) return true;
+    if (
+      !emailError &&
+      !passwordError &&
+      email.length > 0 &&
+      password.length > 0
+    )
+      return true;
     return false;
-  }
+  };
 
-  return (
-    <div className="parentLoginWrapper">
-      <div className="loginComponentWrapper">
-        <div className="loginHeader">{LOGIN}</div>
+  const onRegisterOrSignUp = () => {
+    setIsLogin(!isLogin);
+    reset();
+  };
+
+  const reset = () => {
+    setEmail("");
+    setPassword("");
+    setEmailError(false);
+    setPasswordError(false);
+  };
+
+  const loginStructure = () => {
+    return (
+      <div className="loginWrapper">
+        <div className="loginHeader common-flex-box">{LOGIN}</div>
         <SpaceFiller margin="15px" />
         <div className="emailHeader">{EMAIL_ADDRESS}</div>
         <SpaceFiller />
+        {emailAndPasswordStructure()}
+        <SpaceFiller margin="30px" />
+        <button
+          className={
+            isButtonEnabled() ? "submitButton" : "submitButtonDisabled"
+          }
+          onClick={onSubmit}
+        >
+          {LOGIN}
+        </button>
+        <SpaceFiller margin="20px" />
+        <div className="registerUserWrapper common-flex-box">
+          <div className="donotHaveAccountText">{DONOT_HAVE_ACCESS}</div>
+          <div className="registerText" onClick={onRegisterOrSignUp}>
+            <u>{REGISTER}</u>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const signUpStructure = () => {
+    return (
+      <div className="signUpWrapper">
+        <div className="loginHeader common-flex-box">{SIGN_UP}</div>
+        <SpaceFiller margin="15px" />
+        <div className="emailHeader">{EMAIL_ADDRESS}</div>
+        <SpaceFiller />
+        {emailAndPasswordStructure()}
+        <SpaceFiller margin="10px" />
+        {Object.keys(passwordValidation).map((key, index) => (
+          <div className={"validationRow"} key={`${key}${index}`}>
+            <div className={passwordValidation[key] ? "successText": null}>
+              {passwordValidation[key] ? "✔" : "✖"}
+            </div>
+            <div>{validationStringArray[index]}</div>
+          </div>
+        ))}
+
+        <SpaceFiller margin="20px" />
+        <button
+          className={
+            isButtonEnabled() ? "submitButton" : "submitButtonDisabled"
+          }
+          onClick={onSubmit}
+        >
+          {SIGN_UP}
+        </button>
+        <SpaceFiller margin="20px" />
+        <div className="registerUserWrapper common-flex-box">
+          <div className="donotHaveAccountText">{ALREADY_ACCOUNT}</div>
+          <div className="registerText" onClick={onRegisterOrSignUp}>
+            <u>{LOGIN}</u>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const emailAndPasswordStructure = () => {
+    return (
+      <>
         <input
           type="email"
           value={email} // Bind the input value to the state
@@ -78,25 +175,17 @@ function App() {
           className="inputPassword"
           required
         />
-        <SpaceFiller margin="30px" />
-        <button
-          className={
-            isButtonEnabled() ? "submitButton" : "submitButtonDisabled"
-          }
-          onClick={onSubmit}
-        >
-          {LOGIN}
-        </button>
-        <SpaceFiller margin="20px" />
-        <div className="registerUserWrapper">
-          <div className="donotHaveAccountText">{DONOT_HAVE_ACCESS}</div>
-          <div className="registerText">
-            <u>{REGISTER}</u>
-          </div>
-        </div>
+      </>
+    );
+  };
+
+  return (
+    <div className="parentLoginWrapper common-flex-box">
+      <div className={`loginComponentWrapper ${!isLogin ? "flip" : ""}`}>
+        {isLogin ? loginStructure() : signUpStructure()}
       </div>
     </div>
   );
 }
 
-export default App
+export default App;

@@ -5,3 +5,12 @@ export const validateEmail = (text) => {
     };
     return true;
 }
+
+export const validatePassword = (text) => {
+  return ({
+    hasUpperCase: /[A-Z]/.test(text),
+    hasNumber: /\d/.test(text),
+    hasSpecialChar: /[!@#$%^&*]/.test(text),
+    hasMinLength: text.length >= 8,
+  });
+}
