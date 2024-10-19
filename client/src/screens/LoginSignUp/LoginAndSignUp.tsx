@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SpaceFiller from "../../components/spaceFiller/SpaceFiller.jsx";
-import { validateEmail, validatePassword } from "../../utility/commonFunctions.jsx"
+import { validateEmail, validatePassword } from "../../utility/commonFunctions.jsx";
+import axios from 'axios';
 import {
   LOGIN,
   EMAIL_ADDRESS,
@@ -15,7 +16,7 @@ import {
   AT_LEAST_SPECIAL_CHARACTERS,
   AT_LEAST_LETTERS,
   SHOW_PASSWORD,
-} from "../../constants/string.jsx"
+} from "../../constants/string.jsx";
 import "./LoginAndSignUp.css";
 
 function LoginAndSignUp() {
@@ -60,6 +61,12 @@ function LoginAndSignUp() {
     console.log("asda");
   };
 
+  const onSignUp = () => {
+    axios.post("http://localhost:3001/register", { email, password })
+      .then(result => console.log("Result -", result))
+      .catch(err => console.log(err));
+  };
+
   const isLoginButtonEnabled = () => {
     if (
       !emailError &&
@@ -83,7 +90,7 @@ function LoginAndSignUp() {
     return false;
   };
 
-  const onRegisterOrSignUp = () => {
+  const onFlip = () => {
     setIsLogin(!isLogin);
     reset();
   };
@@ -120,7 +127,7 @@ function LoginAndSignUp() {
         <SpaceFiller margin="20px" />
         <div className="registerUserWrapper common-flex-box">
           <div className="donotHaveAccountText">{DONOT_HAVE_ACCESS}</div>
-          <div className="registerText" onClick={onRegisterOrSignUp}>
+          <div className="registerText" onClick={onFlip}>
             <u>{REGISTER}</u>
           </div>
         </div>
@@ -153,14 +160,14 @@ function LoginAndSignUp() {
           className={
             isSignUpButtonEnabled() ? "submitButton" : "submitButtonDisabled"
           }
-          onClick={onSubmit}
+          onClick={onSignUp}
         >
           {SIGN_UP}
         </button>
         <SpaceFiller margin="20px" />
         <div className="registerUserWrapper common-flex-box">
           <div className="donotHaveAccountText">{ALREADY_ACCOUNT}</div>
-          <div className="registerText" onClick={onRegisterOrSignUp}>
+          <div className="registerText" onClick={onFlip}>
             <u>{LOGIN}</u>
           </div>
         </div>
