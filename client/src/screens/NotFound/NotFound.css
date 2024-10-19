@@ -1,0 +1,34 @@
+/* NotFound.css */
+
+.not-found {
+  font-family: system-ui;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
+.not-found-title {
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+.not-found-message {
+  font-family: system-ui;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.not-found-link {
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.not-found-link:hover {
+  text-decoration: underline;
+}

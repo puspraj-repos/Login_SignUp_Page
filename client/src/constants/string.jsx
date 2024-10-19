@@ -11,6 +11,8 @@ export const AT_LEAST_DIGITS = "At least 1 numeric digit";
 export const AT_LEAST_SPECIAL_CHARACTERS = "At least 1 special character";
 export const AT_LEAST_LETTERS = "At least 8 characters long";
 export const SHOW_PASSWORD = "Show password";
+export const GO_BACK = "Go Back";
+
 
 
 
