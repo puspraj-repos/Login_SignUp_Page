@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SpaceFiller from "../../components/spaceFiller/SpaceFiller.jsx";
 import { validateEmail, validatePassword } from "../../utility/commonFunctions.jsx";
+import { registerUser } from "../../services/apiCall.js";
 import axios from 'axios';
 import {
   LOGIN,
@@ -61,10 +62,9 @@ function LoginAndSignUp() {
     console.log("asda");
   };
 
-  const onSignUp = () => {
-    axios.post("http://localhost:3001/register", { email, password })
-      .then(result => console.log("Result -", result))
-      .catch(err => console.log(err));
+  const onSignUp = async() => {
+    const result = await registerUser("http://localhost:3001/register", { email, password });
+    console.log("Result ---", result)
   };
 
   const isLoginButtonEnabled = () => {
