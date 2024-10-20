@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SpaceFiller from "../../components/spaceFiller/SpaceFiller.jsx";
 import { validateEmail, validatePassword } from "../../utility/commonFunctions.jsx";
 import { registerUser } from "../../services/apiCall.js";
-import axios from 'axios';
+import { toast } from "react-toastify";
 import {
   LOGIN,
   EMAIL_ADDRESS,
@@ -19,6 +19,8 @@ import {
   SHOW_PASSWORD,
 } from "../../constants/string.jsx";
 import "./LoginAndSignUp.css";
+import { SUCCESS } from "../../constants/codes.jsx";
+import { ToastMsgStructure } from "../../components/toastMsg/ToastMsgStructure.jsx";
 
 function LoginAndSignUp() {
   const [email, setEmail] = useState("");
@@ -64,7 +66,9 @@ function LoginAndSignUp() {
 
   const onSignUp = async() => {
     const result = await registerUser("http://localhost:3001/register", { email, password });
-    console.log("Result ---", result)
+    if (String(result?.status) === SUCCESS) {
+      toast.success("Registeration Successfull", ToastMsgStructure);
+    }
   };
 
   const isLoginButtonEnabled = () => {
