@@ -9,10 +9,41 @@ app.use(cors());
 
 mongoose.connect("mongodb://127.0.0.1:27017/employee");
 
+app.post("/login", (req, res) => {
+    const { email, password } = req.body;
+    EmployeeModel.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                if (user.password === password) {
+                  return res.json({
+                    statusCode: "2222",
+                    desc: "Login success",
+                  });
+                } else {
+                  res.json({
+                    statusCode: "4444",
+                    desc: "Password is incorrect",
+                  });
+                }
+            } else {
+                 res.json({
+                   statusCode: "4444",
+                   desc: "No record found",
+                 });
+            }
+            
+        })
+});
+
 app.post("/register", (req, res) => {
     EmployeeModel.create(req.body)
-        .then(employee => res.json(employee))
-        .catch(err => res.json(err))
+      .then(() =>
+        res.json({
+          statusCode: "2222",
+          desc: "Registeration success",
+        })
+      )
+      .catch((err) => res.json(err));
 });
 
 app.listen(3001, () => {

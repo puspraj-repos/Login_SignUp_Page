@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SpaceFiller from "../../components/spaceFiller/SpaceFiller.jsx";
 import { validateEmail, validatePassword } from "../../utility/commonFunctions.jsx";
-import { registerUser } from "../../services/apiCall.js";
+import { loginUser, registerUser } from "../../services/apiCall.js";
 import { toast } from "react-toastify";
 import {
   LOGIN,
@@ -19,7 +19,7 @@ import {
   SHOW_PASSWORD,
 } from "../../constants/string.jsx";
 import "./LoginAndSignUp.css";
-import { SUCCESS } from "../../constants/codes.jsx";
+import { GENERIC_FAILIURE, GENERIC_SUCCESS, SUCCESS } from "../../constants/codes.jsx";
 import { ToastMsgStructure } from "../../components/toastMsg/ToastMsgStructure.jsx";
 
 function LoginAndSignUp() {
@@ -60,14 +60,26 @@ function LoginAndSignUp() {
     }
   };
 
-  const onSubmit = () => {
-    console.log("asda");
+  const onLogin = async () => {
+    const result = await loginUser("http://localhost:3001/login", {
+      email,
+      password,
+    });
+    if (String(result?.data?.statusCode) === GENERIC_SUCCESS) {
+      toast.success(result?.data?.desc, ToastMsgStructure);
+    } else if (String(result?.data?.statusCode) === GENERIC_FAILIURE) {
+      toast.error(result?.data?.desc, ToastMsgStructure);
+    } else {
+      toast.error("Error...", ToastMsgStructure);
+    }
   };
 
-  const onSignUp = async() => {
+  const onSignUp = async () => {
     const result = await registerUser("http://localhost:3001/register", { email, password });
-    if (String(result?.status) === SUCCESS) {
-      toast.success("Registeration Successfull", ToastMsgStructure);
+    if (String(result?.data?.statusCode) === GENERIC_SUCCESS) {
+      toast.success(result?.data?.desc, ToastMsgStructure);
+    } else {
+      toast.error("Error...", ToastMsgStructure);
     }
   };
 
@@ -124,7 +136,7 @@ function LoginAndSignUp() {
           className={
             isLoginButtonEnabled() ? "submitButton" : "submitButtonDisabled"
           }
-          onClick={onSubmit}
+          onClick={onLogin}
         >
           {LOGIN}
         </button>
