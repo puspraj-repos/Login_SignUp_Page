@@ -78,6 +78,8 @@ function LoginAndSignUp() {
     const result = await registerUser("http://localhost:3001/register", { email, password });
     if (String(result?.data?.statusCode) === GENERIC_SUCCESS) {
       toast.success(result?.data?.desc, ToastMsgStructure);
+    } else if (String(result?.data?.statusCode) === GENERIC_FAILIURE) {
+      toast.error(result?.data?.desc, ToastMsgStructure);
     } else {
       toast.error("Error...", ToastMsgStructure);
     }
