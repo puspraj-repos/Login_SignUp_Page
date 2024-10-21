@@ -9,8 +9,15 @@ const {
   INCORRECT_PASSWORD,
   LOGIN_SUCCESS,
   SERVER_RUNING,
+  EMAIL_CRITERIA_NOT_MEET,
+  PASSWORD_CRITERIA_NOT_MEET,
 } = require("./constants/string.js");
 const { DEFAULT_SUCCESS, DEFAULT_ERROR } = require("./constants/codes.js");
+const {
+  validateEmail,
+  validatePassword,
+} = require("./utility/commonFunction.js");
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -42,7 +49,29 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const { email } = req.body;
+  const { email, password } = req.body;
+
+  const emailValidation = validateEmail(email);
+  const passwordValidation = validatePassword(password);
+
+  if (emailValidation) {
+    return res.json({
+      statusCode: DEFAULT_ERROR,
+      desc: EMAIL_CRITERIA_NOT_MEET,
+    });
+  }
+
+  if (
+    !passwordValidation.hasUpperCase ||
+    !passwordValidation.hasNumber ||
+    !passwordValidation.hasSpecialChar ||
+    !passwordValidation.hasMinLength
+  ) {
+    return res.json({
+      statusCode: DEFAULT_ERROR,
+      desc: PASSWORD_CRITERIA_NOT_MEET,
+    });
+  }
   EmployeeModel.findOne({ email: email })
     .then((user) => {
       if (user) {
