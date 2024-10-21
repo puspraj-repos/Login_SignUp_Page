@@ -37,6 +37,7 @@ function LoginAndSignUp() {
   const [isLogin, setIsLogin] = useState(true);
   const [passwordValidation, setPasswordValidation] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validationStringArray = [
     AT_LEAST_UPPER_CASE,
@@ -68,6 +69,7 @@ function LoginAndSignUp() {
   };
 
   const onLogin = async () => {
+    setIsLoading(true);
     const result = await loginUser("http://localhost:3001/login", {
       email,
       password,
@@ -79,9 +81,11 @@ function LoginAndSignUp() {
     } else {
       toast.error("Error...", ToastMsgStructure);
     }
+    setIsLoading(false);
   };
 
   const onSignUp = async () => {
+    setIsLoading(true);
     const result = await registerUser("http://localhost:3001/register", {
       email,
       password,
@@ -93,6 +97,7 @@ function LoginAndSignUp() {
     } else {
       toast.error("Error...", ToastMsgStructure);
     }
+    setIsLoading(false);
   };
 
   const isLoginButtonEnabled = () => {
@@ -100,7 +105,8 @@ function LoginAndSignUp() {
       !emailError &&
       !passwordError &&
       email.length > 0 &&
-      password.length > 0
+      password.length > 0 &&
+      !isLoading
     )
       return true;
     return false;
@@ -112,7 +118,8 @@ function LoginAndSignUp() {
       !passwordError &&
       email.length > 0 &&
       password.length > 0 &&
-      Object.values(passwordValidation).every((value) => value === true)
+      Object.values(passwordValidation).every((value) => value === true) &&
+      !isLoading
     )
       return true;
     return false;
