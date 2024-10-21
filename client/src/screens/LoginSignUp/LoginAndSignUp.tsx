@@ -127,6 +127,10 @@ function LoginAndSignUp() {
     setShowPassword(!showPassword);
   };
 
+  const preventCopyPasteCut = (e) => {
+    e.preventDefault();
+  };
+
   const reset = () => {
     setEmail("");
     setPassword("");
@@ -230,6 +234,9 @@ function LoginAndSignUp() {
           placeholder={PASSWORD}
           className="inputPassword"
           required
+          onCopy={preventCopyPasteCut} // Disable copy
+          onPaste={preventCopyPasteCut} // Disable paste
+          onCut={preventCopyPasteCut} // Disable cut
         />
         <SpaceFiller margin="10px" />
         <div className="checkBoxWrapper">
