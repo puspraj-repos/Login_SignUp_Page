@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import SpaceFiller from "../../components/spaceFiller/SpaceFiller.jsx";
-import { validateEmail, validatePassword } from "../../utility/commonFunctions.jsx";
+import {
+  validateEmail,
+  validatePassword,
+} from "../../utility/commonFunctions.jsx";
 import { loginUser, registerUser } from "../../services/apiCall.js";
 import { toast } from "react-toastify";
 import {
@@ -19,7 +22,11 @@ import {
   SHOW_PASSWORD,
 } from "../../constants/string.jsx";
 import "./LoginAndSignUp.css";
-import { GENERIC_FAILIURE, GENERIC_SUCCESS, SUCCESS } from "../../constants/codes.jsx";
+import {
+  GENERIC_FAILIURE,
+  GENERIC_SUCCESS,
+  SUCCESS,
+} from "../../constants/codes.jsx";
 import { ToastMsgStructure } from "../../components/toastMsg/ToastMsgStructure.jsx";
 
 function LoginAndSignUp() {
@@ -75,7 +82,10 @@ function LoginAndSignUp() {
   };
 
   const onSignUp = async () => {
-    const result = await registerUser("http://localhost:3001/register", { email, password });
+    const result = await registerUser("http://localhost:3001/register", {
+      email,
+      password,
+    });
     if (String(result?.data?.statusCode) === GENERIC_SUCCESS) {
       toast.success(result?.data?.desc, ToastMsgStructure);
     } else if (String(result?.data?.statusCode) === GENERIC_FAILIURE) {
