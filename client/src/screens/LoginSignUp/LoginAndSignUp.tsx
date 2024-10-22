@@ -4,7 +4,11 @@ import {
   validateEmail,
   validatePassword,
 } from "../../utility/commonFunctions.jsx";
-import { loginUser, registerUser } from "../../services/apiCall.js";
+import {
+  loginUser,
+  registerUser,
+  urlGenerator,
+} from "../../services/apiCall.js";
 import { toast } from "react-toastify";
 import {
   LOGIN,
@@ -70,7 +74,7 @@ function LoginAndSignUp() {
 
   const onLogin = async () => {
     setIsLoading(true);
-    const result = await loginUser("http://localhost:3001/login", {
+    const result = await loginUser(urlGenerator("login"), {
       email,
       password,
     });
@@ -86,7 +90,7 @@ function LoginAndSignUp() {
 
   const onSignUp = async () => {
     setIsLoading(true);
-    const result = await registerUser("http://localhost:3001/register", {
+    const result = await registerUser(urlGenerator("register"), {
       email,
       password,
     });
@@ -183,17 +187,20 @@ function LoginAndSignUp() {
         <SpaceFiller />
         {emailAndPasswordStructure()}
         <SpaceFiller margin="10px" />
-        {Object.keys(passwordValidation).map((key, index) => (
-          <div className={"validationRow"} key={`${key}${index}`}>
-            <div
-              className={passwordValidation[key] ? "successText" : "errorText"}
-            >
-              {passwordValidation[key] ? "✔" : "✖"}
+        <div className={password?.length > 0 ? "visible" : "hidden"}>
+          {Object.keys(passwordValidation).map((key, index) => (
+            <div className={"validationRow"} key={`${key}${index}`}>
+              <div
+                className={
+                  passwordValidation[key] ? "successText" : "errorText"
+                }
+              >
+                {passwordValidation[key] ? "✔" : "✖"}
+              </div>
+              <div>{validationStringArray[index]}</div>
             </div>
-            <div>{validationStringArray[index]}</div>
-          </div>
-        ))}
-
+          ))}
+        </div>
         <SpaceFiller margin="20px" />
         <button
           className={

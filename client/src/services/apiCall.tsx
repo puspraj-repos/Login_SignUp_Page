@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE_URL } from "../env"
 
 export const registerUser = async (url: string, body: any) => {
   try {
@@ -17,3 +18,5 @@ export const loginUser = async (url: string, body: any) => {
     return err;
   }
 };
+
+export const urlGenerator = (endURL: string) => `${API_BASE_URL}${endURL}`;
