@@ -18,6 +18,7 @@ const {
   validateEmail,
   validatePassword,
 } = require("./utility/commonFunction.js");
+const path = require("path");
 
 const PORT = process.env.PORT || 3001;
 
@@ -106,6 +107,11 @@ app.post("/register", (req, res) => {
       }
     })
     .catch((err) => res.json(err));
+});
+
+app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "..", "client", "dist", "index.html"));
 });
 
 app.listen(PORT, () => {
