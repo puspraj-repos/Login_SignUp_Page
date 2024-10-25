@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -18,11 +19,25 @@ const {
   validatePassword,
 } = require("./utility/commonFunction.js");
 
+const PORT = process.env.PORT || 3001;
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb://127.0.0.1:27017/employee");
+// Determine the MongoDB URI based on the environment
+const mongoURI =
+  process.env.NODE_ENV === "production"
+    ? process.env.MONGODB_PROD_URI
+    : process.env.MONGODB_LOCAL_URI;
+
+mongoose
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
@@ -93,6 +108,6 @@ app.post("/register", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.listen(3001, () => {
+app.listen(PORT, () => {
   console.log(SERVER_RUNING);
 });

@@ -5,5 +5,5 @@ const EmployeeSchema = new mongoose.Schema({
     password: String
 });
 
-const EmployeeModel = mongoose.model("employee", EmployeeSchema, "register");
+const EmployeeModel = mongoose.model("Users", EmployeeSchema, "users");
 module.exports = EmployeeModel;
