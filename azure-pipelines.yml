@@ -6,8 +6,7 @@
 trigger:
 - main
 
-pool:
-  vmImage: mycomputeragent
+pool: mycomputeragent
 
 steps:
 - task: NodeTool@0
