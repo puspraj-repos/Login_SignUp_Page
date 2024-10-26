@@ -109,7 +109,7 @@ app.post("/register", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+app.use(express.static("../client/dist"));
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "client", "dist", "index.html"));
 });
