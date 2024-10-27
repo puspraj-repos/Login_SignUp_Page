@@ -26,7 +26,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Determine the MongoDB URI based the on environment
+// Determine the MongoDB URI based the on environments
 const mongoURI =
   process.env.NODE_ENV === "production"
     ? process.env.MONGODB_PROD_URI
