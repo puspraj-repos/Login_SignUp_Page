@@ -4,9 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main
+- none
 
-pool: mycomputeragent
+pool: default
 
 steps:
 - task: NodeTool@0
@@ -45,5 +45,3 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'release'
     publishLocation: 'Container'
-
-
